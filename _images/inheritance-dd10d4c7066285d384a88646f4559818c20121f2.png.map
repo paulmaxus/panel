@@ -1,0 +1,13 @@
+<map id="inheritancef27ac68232" name="inheritancef27ac68232">
+<area shape="rect" id="node1" title="Base class for all class types that have Bokeh properties." alt="" coords="239,143,384,161"/>
+<area shape="rect" id="node5" title="Base class for all objects stored in Bokeh |Document| instances." alt="" coords="470,91,589,109"/>
+<area shape="rect" id="node2" title="A mixin for making a type serializable." alt="" coords="4,143,161,161"/>
+<area shape="rect" id="node3" title="Base class for all Bokeh events." alt="" coords="35,4,130,22"/>
+<area shape="rect" id="node4" title="Base class for all Bokeh Model events." alt="" coords="252,4,371,22"/>
+<area shape="rect" id="node11" href="#panel.models.vega.VegaEvent" target="_top" title="panel.models.vega.VegaEvent" alt="" coords="461,4,597,22"/>
+<area shape="rect" id="node10" title="Base class for user interface elements." alt="" coords="630,91,801,109"/>
+<area shape="rect" id="node7" title="A mixin class to provide an interface for registering and" alt="" coords="194,73,428,92"/>
+<area shape="rect" id="node8" title="A mixin class to provide an interface for registering and" alt="" coords="199,108,423,126"/>
+<area shape="rect" id="node9" title="The base class for layoutable components." alt="" coords="834,91,987,109"/>
+<area shape="rect" id="node12" href="#panel.models.vega.VegaPlot" target="_top" title="A Bokeh model that wraps around a Vega plot and renders it inside" alt="" coords="1020,91,1148,109"/>
+</map>

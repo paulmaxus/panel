@@ -1,0 +1,13 @@
+<map id="inheritancedfb8f4191d" name="inheritancedfb8f4191d">
+<area shape="rect" id="node1" title="Base class for all class types that have Bokeh properties." alt="" coords="232,139,374,157"/>
+<area shape="rect" id="node5" title="Base class for all objects stored in Bokeh |Document| instances." alt="" coords="469,88,585,106"/>
+<area shape="rect" id="node2" title="A mixin for making a type serializable." alt="" coords="4,139,157,157"/>
+<area shape="rect" id="node3" title="Base class for all Bokeh events." alt="" coords="34,4,126,21"/>
+<area shape="rect" id="node4" title="Base class for all Bokeh Model events." alt="" coords="245,4,361,21"/>
+<area shape="rect" id="node12" href="#panel.models.echarts.EChartsEvent" target="_top" title="panel.models.echarts.EChartsEvent" alt="" coords="449,4,604,21"/>
+<area shape="rect" id="node10" title="Base class for user interface elements." alt="" coords="636,88,803,106"/>
+<area shape="rect" id="node7" title="A mixin class to provide an interface for registering and" alt="" coords="189,71,417,89"/>
+<area shape="rect" id="node8" title="A mixin class to provide an interface for registering and" alt="" coords="194,105,412,123"/>
+<area shape="rect" id="node9" title="The base class for layoutable components." alt="" coords="835,88,984,106"/>
+<area shape="rect" id="node11" href="#panel.models.echarts.ECharts" target="_top" title="A Bokeh model that wraps around an ECharts plot and renders it" alt="" coords="1016,88,1148,106"/>
+</map>

@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Panel Applications</title>
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600&Lato|Work+Sans:400,700&display=swap" rel="stylesheet" type='text/css'>
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <style>*:not(:defined){visibility:hidden}</style>
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.holoviz.org/panel/1.2.1/dist/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://cdn.holoviz.org/panel/1.2.1/dist/images/favicon.ico">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <script type="text/javascript">
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./serviceWorker.js');
+  }
+  </script>
+  <script type="module" src="https://cdn.holoviz.org/panel/1.2.1/dist/bundled/@microsoft/fast-components@2.30.6/dist/fast-components.js"></script>
+  <script type="module" src="https://cdn.holoviz.org/panel/1.2.1/dist/bundled/fast/js/fast_design.js"></script>
+  <script type="text/javascript">
+    function setParamsFromSearch(text) {
+        const params = new URLSearchParams(location.search);
+        if (text===""){
+            params.delete("search")
+        } else {
+            params.set('search', text);
+        }
+        window.history.replaceState({}, '', `${location.pathname}?${params}`);
+    }
+    function hideCards(text) {
+      text=text.toLowerCase();
+      const cards = document.getElementsByTagName("li")
+      for (const card of cards){
+          if (text==="" || card.innerHTML.toLowerCase().includes(text)){
+              card.style.display=""
+          } else {card.style.display="none"}
+      }
+
+      setParamsFromSearch(text)
+    }
+    function toggleLightDarkTheme(update) {
+        const switchEl = document.getElementById("theme-switch")
+        const params = new URLSearchParams(location.search);
+	if (switchEl.checked) {
+	    window.bodyDesign.setLuminance(1)
+	    window.bodyDesign.setBackgroundColor("#ffffff")
+            params.set('theme', "default");
+        } else {
+	    window.bodyDesign.setLuminance(0.1)
+	    window.bodyDesign.setBackgroundColor("#000000")
+            params.set('theme', "dark");
+        }
+	if (update) {
+            window.history.replaceState({}, '', `${location.pathname}?${params}`);
+	}
+    }
+    function setSwitchFromParams(){
+        const params = new URLSearchParams(window.location.search)
+        if (params.has('theme')){
+            const theme = params.get('theme')
+            const switchEl = document.getElementById("theme-switch")
+            if (theme==='dark'){
+                switchEl.checked = false
+            } else {
+                switchEl.checked = true
+            }
+            toggleLightDarkTheme(true)
+        } else {
+            toggleLightDarkTheme(false)
+	}
+    }
+    function setSearchFromParams(){
+        const params = new URLSearchParams(window.location.search)
+        if (params.has('search')){
+            const search = params.get('search')
+            const searchEl = document.getElementById("search-input")
+            searchEl.value = search
+            hideCards(search)
+        }
+    }
+  </script>
+  <style>
+    :root {
+      --background-color: #ffffff;
+      --header-background: #000000;
+    }
+    html, #body-design-provider {
+	min-height: 100vh;
+    }
+    body {
+	margin: 0px;
+	padding: 0;
+	font-style: normal;
+	font-variant-ligatures: normal;
+	font-variant-caps: normal;
+	font-variant-numeric: normal;
+	font-variant-east-asian: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-size: 16px;
+	line-height: normal;
+	font-family: aktiv-grotesk, "Segoe UI", Arial, Helvetica, sans-serif;
+	overflow-y: auto;
+    }
+    .gallery-item:hover {
+	box-shadow: 0 1px 5px var(--neutral-fill-strong-focus);
+    }
+    .gallery-item {
+	cursor: pointer;
+    }
+    .header {
+	background-image: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) ),url("./images/index_background.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+    }
+    .header-content {
+	display: flex;
+	flex-direction: column;
+	padding: 2rem;
+    }
+    .header article {
+	margin-right: 1.0em;
+	padding-left: 1.0em;
+	padding-right: 1.0em;
+	opacity: 0.8;
+	color: white;
+    }
+    .article .h2 {
+	font-size: 2em;
+    }
+    #body-design-provider {
+	color: var(--neutral-foreground-rest);
+    }
+    #header-design-provider {
+	background-color: #000000;
+	color: var(--neutral-foreground-rest);
+    }
+    #title, #divider, #subtitle {
+	background: transparent;
+	font-size: 1.5em;
+	color: white;
+    }
+    #subtitle {
+	color: white;
+	font-size: 2em;
+	font-weight: bold;
+	margin: 1em 0 0 1em;
+    }
+    #search-input {
+	margin-top: 1em;
+	margin-left: 2em;
+	margin-bottom: 0em;
+	width: calc(100% - 4em);
+    }
+    .theme-toggle-icon {
+	height: 25px;
+	width: 25px;
+	margin-top: 5px;
+	fill: #ffffff;
+    }
+    /* The grid layout is inspired by
+       https://css-tricks.com/look-ma-no-media-queries-responsive-layouts-us	ing-css-grid/
+       https://codepen.io/andybelldesign/pen/vMMYKJ */
+    /*
+      AUTO GRID
+      Set the minimum item size with `--cards-grid-min-size` and you'll
+      get a fully responsive grid with no media queries.
+   */
+    .cards-grid {
+	--cards-grid-min-size: 16rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(var(--cards-grid-min-size), 1fr));
+	grid-gap: 2rem;
+	list-style: none;
+    }
+    /* Presentational styles */
+    .card {
+	padding: 0px;
+    }
+    .cards-grid {
+	margin: 2rem;
+	padding: 0px;
+    }
+    .avatar {
+	vertical-align: middle;
+	float: right;
+	width: 30px;
+	height: 30px;
+	margin-top: 5px;
+	border-radius: 50%;
+    }
+    .card-action svg {
+	vertical-align: middle;
+	float: right;
+	height: 20px;
+	color: white;
+	margin-top: 10px;
+	margin-right: 10px;
+	fill: var(--neutral-foreground-rest);
+    }
+    .card-image {
+	height: 100px;
+	width: 100%;
+	margin-top: 25px;
+    }
+    .card-content {
+	padding: 10px 10px 10px;
+	color: var(--neutral-foreground-rest);
+    }
+    .card-text {
+	height: 100px;
+    }
+    .card-header {
+	height: 2em;
+	text-align: center;
+    }
+    footer {
+	padding: .50rem;
+	text-align: center;
+	font-size: .75rem;
+    }
+    #panel-logo {
+	width: 300px;
+    }
+    .card-link {
+	text-decoration: none;
+	color: var(--neutral-foreground-rest);
+    }
+  </style>
+</head>
+<body>
+  <fast-design-system-provider id="body-design-provider" use-defaults>
+    <fast-design-system-provider id="header-design-provider">
+      <section class="header">
+        <fast-switch id="theme-switch" style="float: right; padding-top: 1em; padding-right: 2em;" onChange="toggleLightDarkTheme()" checked>
+          <span slot="checked-message">
+            <svg class="theme-toggle-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25"><path d="M0 0h24v24H0z" fill="none"/><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/></svg>
+            </span>
+            <span slot="unchecked-message">
+              <svg class="theme-toggle-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 2c-1.82 0-3.53.5-5 1.35C7.99 5.08 10 8.3 10 12s-2.01 6.92-5 8.65C6.47 21.5 8.18 22 10 22c5.52 0 10-4.48 10-10S15.52 2 10 2z"/></svg>
+            </span>
+          </fast-switch>
+        <fast-tooltip anchor="theme-switch">Click to toggle the Theme</fast-tooltip>
+        <div class="header-content">
+          <div>
+            <fast-anchor id="title" href="https://panel.holoviz.org" appearance="neutral" target="_self"><img id="panel-logo" src="https://panel.holoviz.org/_static/logo_horizontal.png"/></fast-anchor>
+            <fast-tooltip anchor="title">Click to visit the Panel web site</fast-tooltip>
+          </div>
+          <span id="subtitle">Panel Applications</span>
+        </div>
+      </section>
+    </fast-design-system-provider>
+    <section class="search">
+      <fast-text-field id="search-input" placeholder="search" onInput="hideCards(event.target.value)"></fast-text-field>
+    </section>
+    <section id="cards">
+      <ul class="cards-grid">
+        <li class="card">
+          <a class="card-link" href="./action_button.html" id="./action_button.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">action button</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./action_button.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./altair_brushing.html" id="./altair_brushing.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">altair brushing</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./altair_brushing.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./bokeh_property_editor.html" id="./bokeh_property_editor.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">bokeh property editor</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./bokeh_property_editor.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./canvas_draw.html" id="./canvas_draw.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">canvas draw</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./canvas_draw.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./deckgl.html" id="./deckgl.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">deckgl</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./deckgl.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./deckgl_game_of_life.html" id="./deckgl_game_of_life.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">deckgl game of life</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./deckgl_game_of_life.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./dynamic_tabs.html" id="./dynamic_tabs.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">dynamic tabs</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./dynamic_tabs.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./gapminders.html" id="./gapminders.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">gapminders</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./gapminders.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./glaciers.html" id="./glaciers.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">glaciers</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./glaciers.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./hello_world.html" id="./hello_world.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">hello world</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./hello_world.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./holoviews_glyph_link.html" id="./holoviews_glyph_link.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">holoviews glyph link</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./holoviews_glyph_link.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./hvplot_explorer.html" id="./hvplot_explorer.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">hvplot explorer</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./hvplot_explorer.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./iris_kmeans.html" id="./iris_kmeans.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">iris kmeans</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./iris_kmeans.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./leaflet.html" id="./leaflet.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">leaflet</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./leaflet.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./loading.html" id="./loading.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">loading</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./loading.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./material_ui.html" id="./material_ui.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">material ui</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./material_ui.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./nyc_deckgl.html" id="./nyc_deckgl.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">nyc deckgl</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./nyc_deckgl.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./penguin_crossfilter.html" id="./penguin_crossfilter.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">penguin crossfilter</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./penguin_crossfilter.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./penguin_kmeans.html" id="./penguin_kmeans.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">penguin kmeans</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./penguin_kmeans.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./plot_viewer.html" id="./plot_viewer.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">plot viewer</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./plot_viewer.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./plotly.html" id="./plotly.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">plotly</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./plotly.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./portfolio_analyzer.html" id="./portfolio_analyzer.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">portfolio analyzer</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./portfolio_analyzer.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./portfolio_optimizer.html" id="./portfolio_optimizer.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">portfolio optimizer</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./portfolio_optimizer.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./precedence.html" id="./precedence.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">precedence</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./precedence.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./streaming_bokeh.html" id="./streaming_bokeh.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">streaming bokeh</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./streaming_bokeh.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./streaming_indicator.html" id="./streaming_indicator.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">streaming indicator</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./streaming_indicator.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./streaming_perspective.html" id="./streaming_perspective.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">streaming perspective</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./streaming_perspective.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./streaming_tabulator.html" id="./streaming_tabulator.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">streaming tabulator</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./streaming_tabulator.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./streaming_videostream.html" id="./streaming_videostream.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">streaming videostream</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./streaming_videostream.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./subobjects.html" id="./subobjects.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">subobjects</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./subobjects.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./sync_url.html" id="./sync_url.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">sync url</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./sync_url.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./table_viewer.html" id="./table_viewer.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">table viewer</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./table_viewer.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./vega_link.html" id="./vega_link.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">vega link</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./vega_link.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./vtk_interactive.html" id="./vtk_interactive.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">vtk interactive</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./vtk_interactive.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./vtk_slicer.html" id="./vtk_slicer.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">vtk slicer</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./vtk_slicer.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./vtk_warp.html" id="./vtk_warp.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">vtk warp</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./vtk_warp.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./vue.html" id="./vue.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">vue</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./vue.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./windturbines.html" id="./windturbines.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">windturbines</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./windturbines.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+        <li class="card">
+          <a class="card-link" href="./xgboost_classifier.html" id="./xgboost_classifier.html">
+            <fast-card class="gallery-item">
+              <svg class="card-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-window" viewBox="0 0 16 16">
+                  <path d="M2.5 4a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm1 .5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                  <path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm13 2v2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zM2 14a1 1 0 0 1-1-1V6h14v7a1 1 0 0 1-1 1H2z"/>
+              </svg>
+              <div class="card-content">
+                <h2 class="card-header">xgboost classifier</h2>
+              </div>
+            </fast-card>
+            <fast-tooltip anchor="./xgboost_classifier.html">Click to start the application</fast-tooltip>
+          </a>
+        </li>
+      </ul>
+      </section>
+      <section>
+        <fast-divider></fast-divider>
+      <footer>
+        <p>Made with &#x1f40d;, &#10084;&#65039;, <fast-anchor href="https://fast.design" appearance="hypertext" target="_blank">Fast</fast-anchor> and <fast-anchor href="https://panel.holoviz.org" appearance="hypertext" target="_blank">Panel</fast-anchor>.</p>
+      </footer>
+    </section>
+  </fast-design-system-provider>
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const header_design = new window.fastDesignProvider("#header-design-provider");
+      header_design.setBackgroundColor('#ffffff')
+      window.bodyDesign = new window.fastDesignProvider("#body-design-provider");
+      setSwitchFromParams()
+      setSearchFromParams()
+    })
+  </script>
+</body>
+</html>

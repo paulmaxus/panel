@@ -1,0 +1,21 @@
+<map id="inheritancedcf9264c51" name="inheritancedcf9264c51">
+<area shape="rect" id="node1" title="An Application is a factory for Document instances." alt="" coords="3,235,171,253"/>
+<area shape="rect" id="node10" href="#panel.io.server.Application" target="_top" title="panel.io.server.Application" alt="" coords="272,235,386,253"/>
+<area shape="rect" id="node2" title="Explicitly coordinate the level Tornado components required to run a" alt="" coords="19,202,155,220"/>
+<area shape="rect" id="node3" title="A high level convenience class to run a Bokeh server." alt="" coords="271,202,387,220"/>
+<area shape="rect" id="node18" href="#panel.io.server.Server" target="_top" title="panel.io.server.Server" alt="" coords="546,202,643,220"/>
+<area shape="rect" id="node4" title="This mixin adds the expected Tornado authorization hooks:" alt="" coords="202,103,456,120"/>
+<area shape="rect" id="node7" title="Implements a custom Tornado handler for document display page" alt="" coords="487,70,702,87"/>
+<area shape="rect" id="node9" title="Implements a custom Tornado handler to display the available applications" alt="" coords="501,103,688,120"/>
+<area shape="rect" id="node5" title="Base class for HTTP request handlers." alt="" coords="25,136,149,153"/>
+<area shape="rect" id="node14" title="A simple handler that can serve static content from a directory." alt="" coords="265,136,393,153"/>
+<area shape="rect" id="node16" href="#panel.io.server.ProxyFallbackHandler" target="_top" title="A `RequestHandler` that wraps another HTTP server callback and" alt="" coords="251,169,407,187"/>
+<area shape="rect" id="node6" title="Implements a custom Tornado handler for the autoload JS chunk" alt="" coords="733,3,973,21"/>
+<area shape="rect" id="node11" href="#panel.io.server.AutoloadJsHandler" target="_top" title="Implements a custom Tornado handler for the autoload JS chunk" alt="" coords="1004,20,1149,37"/>
+<area shape="rect" id="node8" title="Implements a custom Tornado handler for document display page" alt="" coords="761,70,945,87"/>
+<area shape="rect" id="node15" href="#panel.io.server.DocHandler" target="_top" title="panel.io.server.DocHandler" alt="" coords="1018,53,1135,71"/>
+<area shape="rect" id="node17" href="#panel.io.server.RootHandler" target="_top" title="Custom RootHandler that provides the CDN_DIST directory as a" alt="" coords="793,103,913,120"/>
+<area shape="rect" id="node13" href="#panel.io.server.ComponentResourceHandler" target="_top" title="A handler that serves local resources relative to a Python module." alt="" coords="503,136,685,153"/>
+<area shape="rect" id="node19" href="#panel.io.server.StoppableThread" target="_top" title="Thread class with a stop() method." alt="" coords="261,70,397,87"/>
+<area shape="rect" id="node20" title="A class that represents a thread of control." alt="" coords="49,70,126,87"/>
+</map>

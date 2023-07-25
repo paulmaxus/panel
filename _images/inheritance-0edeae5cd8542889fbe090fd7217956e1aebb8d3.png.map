@@ -1,0 +1,24 @@
+<map id="inheritanceac19c4fe0a" name="inheritanceac19c4fe0a">
+<area shape="rect" id="node1" href="panel.reactive.html#panel.reactive.Reactive" target="_top" title="Reactive is a Viewable object that also supports syncing between" alt="" coords="436,162,527,178"/>
+<area shape="rect" id="node10" href="#panel.widgets.base.Widget" target="_top" title="Widgets allow syncing changes in bokeh widget models with the" alt="" coords="554,162,656,178"/>
+<area shape="rect" id="node2" title="Syncable is an extension of the Renderable object which can not" alt="" coords="316,148,407,163"/>
+<area shape="rect" id="node3" href="panel.viewable.html#panel.viewable.Viewable" target="_top" title="Viewable is the baseclass all visual components in the panel" alt="" coords="315,177,409,192"/>
+<area shape="rect" id="node4" title="Baseclass for objects which can be rendered to a Bokeh model." alt="" coords="181,148,283,163"/>
+<area shape="rect" id="node5" href="panel.viewable.html#panel.viewable.Layoutable" target="_top" title="Layoutable defines shared style and layout related parameters" alt="" coords="182,177,282,192"/>
+<area shape="rect" id="node6" title="params(name=String)" alt="" coords="10,177,142,192"/>
+<area shape="rect" id="node7" title="Mixin class to allow rendering and syncing objects in notebook" alt="" coords="14,148,138,163"/>
+<area shape="rect" id="node8" title="Mixin to define methods shared by objects which can served." alt="" coords="177,206,287,221"/>
+<area shape="rect" id="node9" href="#panel.widgets.base.CompositeWidget" target="_top" title="A baseclass for widgets which are made up of two or more other" alt="" coords="687,133,825,149"/>
+<area shape="rect" id="node14" href="#panel.widgets.select.CrossSelector" target="_top" title="A composite widget which allows selecting from a list of items" alt="" coords="861,119,991,134"/>
+<area shape="rect" id="node11" href="#panel.widgets.select.AutocompleteInput" target="_top" title="The `MultiChoice` widget allows selecting multiple values from a list of" alt="" coords="683,162,828,178"/>
+<area shape="rect" id="node21" href="#panel.widgets.select.SelectBase" target="_top" title="panel.widgets.select.SelectBase" alt="" coords="695,191,816,207"/>
+<area shape="rect" id="node12" href="#panel.widgets.select.CheckBoxGroup" target="_top" title="The `CheckBoxGroup` widget allows selecting between a list of options by" alt="" coords="7,119,145,134"/>
+<area shape="rect" id="node13" href="#panel.widgets.select.CheckButtonGroup" target="_top" title="The `CheckButtonGroup` widget allows selecting between a list of options" alt="" coords="3,90,149,105"/>
+<area shape="rect" id="node15" href="#panel.widgets.select.MultiSelect" target="_top" title="The `MultiSelect` widget allows selecting multiple values from a list of" alt="" coords="696,104,816,120"/>
+<area shape="rect" id="node16" href="#panel.widgets.select.MultiChoice" target="_top" title="The `MultiChoice` widget allows selecting multiple values from a list of" alt="" coords="15,61,137,76"/>
+<area shape="rect" id="node17" href="#panel.widgets.select.RadioBoxGroup" target="_top" title="The `RadioBoxGroup` widget allows selecting from a list or dictionary of" alt="" coords="8,32,144,47"/>
+<area shape="rect" id="node18" href="#panel.widgets.select.RadioButtonGroup" target="_top" title="The `RadioButtonGroup` widget allows selecting from a list or dictionary" alt="" coords="4,3,148,18"/>
+<area shape="rect" id="node19" href="#panel.widgets.select.Select" target="_top" title="The `Select` widget allows selecting a value from a list or dictionary of" alt="" coords="1035,177,1139,192"/>
+<area shape="rect" id="node20" href="#panel.widgets.select.SingleSelectBase" target="_top" title="panel.widgets.select.SingleSelectBase" alt="" coords="856,191,997,207"/>
+<area shape="rect" id="node22" href="#panel.widgets.select.ToggleGroup" target="_top" title="This class is a factory of ToggleGroup widgets." alt="" coords="1025,206,1149,221"/>
+</map>

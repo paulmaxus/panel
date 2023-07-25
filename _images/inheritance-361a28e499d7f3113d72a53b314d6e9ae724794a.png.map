@@ -1,0 +1,10 @@
+<map id="inheritanceb7652e9a3c" name="inheritanceb7652e9a3c">
+<area shape="rect" id="node1" title="Base class for all class types that have Bokeh properties." alt="" coords="212,96,341,112"/>
+<area shape="rect" id="node3" title="Base class for all objects stored in Bokeh |Document| instances." alt="" coords="410,50,515,66"/>
+<area shape="rect" id="node2" title="A mixin for making a type serializable." alt="" coords="3,96,143,112"/>
+<area shape="rect" id="node8" title="Base class for user interface elements." alt="" coords="545,50,697,66"/>
+<area shape="rect" id="node5" title="A mixin class to provide an interface for registering and" alt="" coords="173,34,380,50"/>
+<area shape="rect" id="node6" title="A mixin class to provide an interface for registering and" alt="" coords="177,65,376,81"/>
+<area shape="rect" id="node7" title="The base class for layoutable components." alt="" coords="726,50,862,66"/>
+<area shape="rect" id="node9" href="#panel.models.ace.AcePlot" target="_top" title="A Bokeh model that wraps around a Ace editor and renders it inside" alt="" coords="1043,50,1149,66"/>
+</map>

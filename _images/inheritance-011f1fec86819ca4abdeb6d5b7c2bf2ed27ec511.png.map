@@ -1,0 +1,13 @@
+<map id="inheritanceed454282a2" name="inheritanceed454282a2">
+<area shape="rect" id="node1" title="Base class for all class types that have Bokeh properties." alt="" coords="201,121,324,136"/>
+<area shape="rect" id="node5" title="Base class for all objects stored in Bokeh |Document| instances." alt="" coords="410,77,510,92"/>
+<area shape="rect" id="node2" title="A mixin for making a type serializable." alt="" coords="3,121,136,136"/>
+<area shape="rect" id="node3" title="Base class for all Bokeh events." alt="" coords="30,3,109,19"/>
+<area shape="rect" id="node4" title="Base class for all Bokeh Model events." alt="" coords="213,3,312,19"/>
+<area shape="rect" id="node12" href="#panel.models.terminal.KeystrokeEvent" target="_top" title="panel.models.terminal.KeystrokeEvent" alt="" coords="389,3,531,19"/>
+<area shape="rect" id="node10" title="Base class for user interface elements." alt="" coords="559,77,704,92"/>
+<area shape="rect" id="node7" title="A mixin class to provide an interface for registering and" alt="" coords="164,62,361,77"/>
+<area shape="rect" id="node8" title="A mixin class to provide an interface for registering and" alt="" coords="168,91,357,107"/>
+<area shape="rect" id="node9" title="The base class for layoutable components." alt="" coords="731,77,860,92"/>
+<area shape="rect" id="node13" href="#panel.models.terminal.Terminal" target="_top" title="Custom Terminal Model" alt="" coords="1032,77,1149,92"/>
+</map>

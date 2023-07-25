@@ -1,0 +1,17 @@
+<map id="inheritance1bbae5e53c" name="inheritance1bbae5e53c">
+<area shape="rect" id="node1" title="Base class for all class types that have Bokeh properties." alt="" coords="155,127,250,139"/>
+<area shape="rect" id="node3" title="Base class for all objects stored in Bokeh |Document| instances." alt="" coords="300,93,377,105"/>
+<area shape="rect" id="node2" title="A mixin for making a type serializable." alt="" coords="2,127,105,139"/>
+<area shape="rect" id="node8" title="Base class for user interface elements." alt="" coords="399,93,510,105"/>
+<area shape="rect" id="node5" title="A mixin class to provide an interface for registering and" alt="" coords="126,82,278,94"/>
+<area shape="rect" id="node6" title="A mixin class to provide an interface for registering and" alt="" coords="130,104,275,116"/>
+<area shape="rect" id="node7" title="The base class for layoutable components." alt="" coords="532,93,631,105"/>
+<area shape="rect" id="node10" title="A base class for all interactive widget types." alt="" coords="652,59,759,71"/>
+<area shape="rect" id="node9" title="Abstract base class for input widgets." alt="" coords="780,25,899,37"/>
+<area shape="rect" id="node11" title="Single&#45;select widget." alt="" coords="920,2,1023,14"/>
+<area shape="rect" id="node15" href="#panel.models.widgets.FileDownload" target="_top" title="panel.models.widgets.FileDownload" alt="" coords="920,25,1023,37"/>
+<area shape="rect" id="node18" href="#panel.models.widgets.SingleSelect" target="_top" title="Single&#45;select widget." alt="" coords="922,48,1022,60"/>
+<area shape="rect" id="node16" href="#panel.models.widgets.Player" target="_top" title="The Player widget provides controls to play through a number of frames." alt="" coords="797,48,882,60"/>
+<area shape="rect" id="node19" href="#panel.models.widgets.TooltipIcon" target="_top" title="panel.models.widgets.TooltipIcon" alt="" coords="792,70,887,82"/>
+<area shape="rect" id="node14" href="#panel.models.widgets.CustomSelect" target="_top" title="Custom widget that extends the base Bokeh Select" alt="" coords="1045,2,1150,14"/>
+</map>
