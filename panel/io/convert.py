@@ -238,7 +238,9 @@ def script_to_html(
     if requirements == 'auto':
         requirements = find_imports(source)
     elif isinstance(requirements, str) and pathlib.Path(requirements).is_file():
-        requirements = pathlib.Path(requirements).read_text(encoding='utf-8').split('/n')
+        requirements_path = pathlib.Path(requirements)
+        with requirements_path.open(encoding='utf-8') as f:
+            requirements = f.read().splitlines()
         try:
             from packaging.requirements import Requirement
             requirements = [
